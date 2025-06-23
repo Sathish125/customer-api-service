@@ -24,17 +24,26 @@ A simple CRUD API for managing customer information using FastAPI.
 ## Project Structure
 
 ```
-├── api/                # API routes
-│   ├── app.py          # Main FastAPI application
-│   └── customer_routes.py  # Customer endpoints
-├── models/             # Data models
-│   ├── customer.py     # Pydantic models
-│   └── db_models.py    # SQLAlchemy ORM models
-├── services/           # Business logic
-│   ├── customer_service.py  # Customer operations
-│   └── database.py     # Database connection
-├── app.py             # Application entry point
-└── requirements.txt   # Dependencies
+customer-api-service/
+├── api/                    # API layer
+│   ├── __init__.py
+│   ├── app.py             # FastAPI application setup
+│   └── customer_routes.py # Customer endpoints
+├── models/                # Data models
+│   ├── __init__.py
+│   ├── customer.py        # Pydantic schemas
+│   └── db_models.py       # SQLAlchemy ORM models
+├── services/              # Business logic layer
+│   ├── __init__.py
+│   ├── customer_service.py # Customer CRUD operations
+│   └── database.py        # Database configuration
+├── tests/                 # Test suite
+│   ├── __init__.py
+│   └── test_customer_api.py # API tests
+├── data/                  # Database files (auto-created)
+├── app.py                 # Application entry point
+├── requirements.txt       # Python dependencies
+└── README.md             # current file
 ```
 
 ## Installation
@@ -87,24 +96,24 @@ Once the server is running, documentation will be available at:
 
 ## Testing
 
-The API includes unit tests that use FastAPI's TestClient and an in-memory SQLite database to test the endpoints without requiring a running server.
+The API includes comprehensive unit tests using pytest and FastAPI's TestClient. Tests use a separate SQLite database file to ensure isolation from production data.
 
 ### Running Tests
 
 ```bash
 # Run all tests
-python -m unittest discover tests
+python -m pytest tests/ -v
 
 # Run a specific test file
-python -m unittest tests/test_customer_api.py
+python -m pytest tests/test_customer_api.py -v
+
+# Run with code coverage (at 75% now)
+python -m pytest tests/ --cov=api --cov=services --cov=models
 ```
 
-### Test Structure
+### Test Features
 
-Tests are designed to be self-contained, with each test method setting up its own test environment including:
-
-- In-memory SQLite database
-- Database tables created fresh for each test
-- FastAPI dependency overrides for database sessions
-
-This approach ensures tests are isolated and can be run in any order without dependencies between test cases.
+- **Separate Test Database**: Uses `test_customers.db` (automatically created and cleaned up)
+- **Real API Testing**: Tests actual HTTP endpoints using FastAPI TestClient
+- **Data Isolation**: Each test starts with a clean database state
+- **Production Code Testing**: Tests the actual API code, not mock implementations

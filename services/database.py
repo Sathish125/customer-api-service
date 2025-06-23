@@ -2,7 +2,6 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from functools import lru_cache
 
 # Ensure data directory exists
 os.makedirs("data", exist_ok=True)
@@ -16,13 +15,8 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
 
-# Following Singleton pattern using lru_cache with maxsize=1
-@lru_cache(maxsize=1)
-def get_db_session():
-    return SessionLocal()
-
 def get_db():
-    db = get_db_session()
+    db = SessionLocal()
     try:
         yield db
     finally:
