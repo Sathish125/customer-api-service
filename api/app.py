@@ -14,5 +14,10 @@ async def startup_event():
 def read_root():
     return {"message": "Welcome to Customer API Service"}
 
+# Health check endpoint
+@app.get("/health")
+def health_check():
+    return {"status": "healthy", "service": "customer-api"}
+
 # Include routers
 app.include_router(customer_router, prefix="/customers", tags=["customers"])

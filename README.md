@@ -56,8 +56,27 @@ pip install -r requirements.txt
 python app.py
 ```
 
+## Docker
+
+The application can be run using Docker for easy deployment and consistency across environments.
+
+### Building the Docker Image
+
+```bash
+# Build the image
+docker build -t customer-api-service .
+```
+
+### Running with Docker
+```bash
+# Run the container (use -d for detacted mode)
+docker run -p 8000:8000 customer-api-service
+```
+
 ## API Endpoints
 
+- `GET /` - Welcome message
+- `GET /health` - Health check
 - `GET /customers/` - List all customers
 - `POST /customers/` - Create a new customer
 - `GET /customers/{id}` - Get a specific customer
